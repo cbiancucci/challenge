@@ -41,6 +41,16 @@ public class Main {
 
         findCorners();
         findBorders();
+        System.out.println("Bordes superiores: " + topBorders.size());
+        System.out.println("Bordes izquierdos: " + bottomBorders.size());
+        System.out.println("Bordes inferiores: " + leftBorders.size());
+        System.out.println("Bordes derechos: " + rightBorders.size());
+
+        sortBorders();
+    }
+
+    private static void sortBorders() {
+
     }
 
     private static void findCorners() {

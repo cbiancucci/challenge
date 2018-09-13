@@ -42,17 +42,10 @@ public class Puzzle extends JFrame implements ActionListener {
         for (int i = 0; i < PUZZLE_ROWS; i++) {
 
             for (int j = 0; j < PUZZLE_COLS; j++) {
-
-                img = "/Users/cpbiancucci/Downloads/desafio/" + imgVec.get((i * PUZZLE_COLS) + j) + ".jpg";
+                img = "/Users/cpbiancucci/Downloads/desafio/" + imgVec.get((i * PUZZLE_COLS) + j) + ".png";
                 icon = new ImageIcon(img);
                 this.splitImgs[i][j] = new JButton();
-
-                /**
-                 * Show split image, except one button
-                 */
-                if (!(i == 2 && j == 3)) {
-                    this.splitImgs[i][j].setIcon(icon);
-                }
+                this.splitImgs[i][j].setIcon(icon);
 
                 /**
                  * Set split image positions
