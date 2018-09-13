@@ -22,6 +22,15 @@ public class Main {
     private static List<BufferedImage> blocks = new ArrayList<>();
 
     private static Block upLeft;
+    private static Block upRight;
+    private static Block downLeft;
+    private static Block downRight;
+
+    private static List<Block> corners = new ArrayList<>();
+    private static List<Block> topBorders = new ArrayList<>();
+    private static List<Block> bottomBorders = new ArrayList<>();
+    private static List<Block> leftBorders = new ArrayList<>();
+    private static List<Block> rightBorders = new ArrayList<>();
 
     public static void main(String[] args) {
         BufferedImage image = loadImage();
@@ -30,18 +39,47 @@ public class Main {
         makeSubSet(image);
         System.out.println("Subset done");
 
-        findColor();
-        //findUpLeft();
-        /*
-        for (int cant = 0; cant < 10000000; cant++) {
-            Collections.shuffle(blocks);
+        findCorners();
+        findBorders();
+    }
 
-            BufferedImage result = makeQRFromBlocks(String.valueOf(cant));
-            String texto = decodeQRCode(result);
-            if (texto != null) {
-                System.out.println("RESULTADO: " + texto);
+    private static void findCorners() {
+        for (final Block iterable : list) {
+            if (iterable.isUpperLeft()) {
+                System.out.println("esquina superior izquierda");
+                upLeft = iterable;
+                corners.add(upLeft);
+            } else if (iterable.isUpperRight()) {
+                System.out.println("esquina superior derecha");
+                upRight = iterable;
+                corners.add(upRight);
+            } else if (iterable.isDownLeft()) {
+                System.out.println("esquina inferior izquierda");
+                downLeft = iterable;
+                corners.add(downLeft);
+            } else if (iterable.isDownRight()) {
+                System.out.println("esquina inferior derecha");
+                downRight = iterable;
+                corners.add(downRight);
             }
-        }*/
+        }
+    }
+
+    private static void findBorders() {
+        for (final Block iterable : list) {
+            if (!corners.contains(iterable)) { // Descarto las esquinas
+
+                if (iterable.isTopBorder()) {
+                    topBorders.add(iterable);
+                } else if (iterable.isBottomBorder()) {
+                    bottomBorders.add(iterable);
+                } else if (iterable.isLeftBorder()) {
+                    leftBorders.add(iterable);
+                } else if (iterable.isRightBorder()) {
+                    rightBorders.add(iterable);
+                }
+            }
+        }
     }
 
     private static void findColor() {
@@ -51,9 +89,9 @@ public class Main {
 
         int count = 0;
 
-        for (final Block iterable: list) {
+        for (final Block iterable : list) {
             if (iterable.hasColor(color)) {
-                count ++;
+                count++;
             }
         }
     }
@@ -72,11 +110,11 @@ public class Main {
         int cont = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                BufferedImage newImage = cropImage(image, new Rectangle((50 * i) +1, (50 * j)+1, 49, 49));
+                BufferedImage newImage = cropImage(image, new Rectangle((50 * i) + 1, (50 * j) + 1, 49, 49));
                 blocks.add(newImage);
 
                 saveImage(newImage, String.valueOf(cont));
-                cont ++;
+                cont++;
 
                 getBlockForImage(newImage);
             }
@@ -102,7 +140,7 @@ public class Main {
         Color downLeft = getColor(image.getRGB(5, 45));
         Color downRight = getColor(image.getRGB(45, 45));
 
-        list.add(new Block(upLeft, upRight, downLeft, downRight));
+        list.add(new Block(image, upLeft, upRight, downLeft, downRight));
     }
 
     private static Color getColor(int clr) {
